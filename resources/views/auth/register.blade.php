@@ -1,40 +1,51 @@
-<div class="flex flex-col justify-center font-[sans-serif] sm:h-screen p-4">
-    <div class="max-w-md w-full mx-auto border border-gray-300 rounded-2xl p-8">
-      <div class="text-center mb-12">
-        <a href="javascript:void(0)"><img
-          src="https://readymadeui.com/readymadeui.svg" alt="logo" class='w-40 inline-block' />
-        </a>
-      </div>
+<x-layout>
+  <h1 class="title">Register a new account</h1>
 
-      <form>
-        <div class="space-y-6">
-          <div>
-            <label class="text-gray-800 text-sm mb-2 block">Email Id</label>
-            <input name="email" type="text" class="text-gray-800 bg-white border border-gray-300 w-full text-sm px-4 py-3 rounded-md outline-blue-500" placeholder="Enter email" />
-          </div>
-          <div>
-            <label class="text-gray-800 text-sm mb-2 block">Password</label>
-            <input name="password" type="password" class="text-gray-800 bg-white border border-gray-300 w-full text-sm px-4 py-3 rounded-md outline-blue-500" placeholder="Enter password" />
-          </div>
-          <div>
-            <label class="text-gray-800 text-sm mb-2 block">Confirm Password</label>
-            <input name="cpassword" type="password" class="text-gray-800 bg-white border border-gray-300 w-full text-sm px-4 py-3 rounded-md outline-blue-500" placeholder="Enter confirm password" />
+  <div class="mx-auto max-w-screen-sm card">
+      <form action="{{ route('register') }}" method="post">
+          @csrf
+
+          {{-- Username --}}
+          <div class="mb-4">
+              <label for="username">Username</label>
+              <input type="text" name="username" value="{{ old('username') }}"
+                  class="input  @error('username') ring-red-500 @enderror">
+
+              @error('username')
+                  <p class="error">{{ $message }}</p>
+              @enderror
           </div>
 
-          <div class="flex items-center">
-            <input id="remember-me" name="remember-me" type="checkbox" class="h-4 w-4 shrink-0 text-blue-600 focus:ring-blue-500 border-gray-300 rounded" />
-            <label for="remember-me" class="text-gray-800 ml-3 block text-sm">
-              I accept the <a href="javascript:void(0);" class="text-blue-600 font-semibold hover:underline ml-1">Terms and Conditions</a>
-            </label>
-          </div>
-        </div>
+          {{-- Email --}}
+          <div class="mb-4">
+              <label for="email">Email</label>
+              <input type="text" name="email" value="{{ old('email') }}"
+                  class="input @error('email') ring-red-500 @enderror">
 
-        <div class="!mt-8">
-          <button type="button" class="w-full py-3 px-4 text-sm tracking-wider font-semibold rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none">
-            Create an account
-          </button>
-        </div>
-        <p class="text-gray-800 text-sm mt-6 text-center">Already have an account? <a href="javascript:void(0);" class="text-blue-600 font-semibold hover:underline ml-1">Login here</a></p>
+              @error('email')
+                  <p class="error">{{ $message }}</p>
+              @enderror
+          </div>
+
+          {{-- Password --}}
+          <div class="mb-4">
+              <label for="password">Password</label>
+              <input type="password" name="password" class="input @error('password') ring-red-500 @enderror">
+
+              @error('password')
+                  <p class="error">{{ $message }}</p>
+              @enderror
+          </div>
+
+          {{-- Confirm Password --}}
+          <div class="mb-8">
+              <label for="password_confirmation">Confirm Password</label>
+              <input type="password" name="password_confirmation"
+                  class="input @error('password') ring-red-500 @enderror">
+          </div>
+
+          {{-- Submit Button --}}
+          <button  class="btn">Register</button>
       </form>
-    </div>
   </div>
+</x-layout>

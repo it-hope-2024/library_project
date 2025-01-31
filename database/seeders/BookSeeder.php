@@ -1,10 +1,10 @@
 <?php
 
 namespace Database\Seeders;
-
+use App\Models\Author;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-
+use App\Models\Book;
 class BookSeeder extends Seeder
 {
     /**
@@ -12,6 +12,6 @@ class BookSeeder extends Seeder
      */
     public function run(): void
     {
-        //
+        Book::factory(2)->create();
     }
 }

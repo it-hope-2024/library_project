@@ -15,7 +15,7 @@ class Book extends Model
         'publication_date',
         'cover_image',
         'book_file',
-        // 'author_id',
+        'author_id',
     ];
 
     public function author() :BelongsTo
