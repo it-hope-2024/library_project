@@ -26,7 +26,7 @@
 
                     @auth
                     <li>
-                      <a href="/" class="block py-2 px-3 rounded ">Add Author</a>
+                      <a href="{{route('authors.create')}}" class="block py-2 px-3 rounded ">Add Author</a>
                   </li>
                   <li>
                     <a href="/" class="block py-2 px-3 rounded ">Add Book</a>

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Book;
+use App\Models\Author;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreBookRequest;
 use App\Http\Requests\UpdateBookRequest;
@@ -12,6 +13,7 @@ use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Http\Request;
 
 class BookController extends Controller  implements HasMiddleware
 {
@@ -53,25 +55,43 @@ class BookController extends Controller  implements HasMiddleware
                     'book_file' => ['nullable', 'file', 'max:10000', 'mimes:pdf'] // added validation for book_file
                 ]);
         
-                // Store cover_image if exists
-                $path = null;
-                if ($request->hasFile('cover_image')) {
-                    $path = Storage::disk('public')->put('books_images', $request->cover_image);
-                }
+        //         // Store cover_image if exists
+        //         $path = null;
+        //         if ($request->hasFile('cover_image')) {
+        //             $path = Storage::disk('public')->put('books_images', $request->cover_image);
+        //         }
         
-                        // Store book_file if exists
-        $filePath = null;
+        //                 // Store book_file if exists
+        // $filePath = null;
+        // if ($request->hasFile('book_file')) {
+        //     $filePath = Storage::disk('public')->put('books_files', $request->book_file);
+        // }
+
+    // Retrieve the author by ID
+    $author = Author::findOrFail($request->author_id);
+
+    // Create a book associated with the author
+    $book = $author->books()->create([
+        'title' => $request->title,
+        'publication_date' => $request->publication_date,
+    ]);
+
+
+        if ($request->hasFile('cover_image')) {
+            $book->addMediaFromRequest('cover_image')->toMediaCollection('cover_image');
+        }
+    
         if ($request->hasFile('book_file')) {
-            $filePath = Storage::disk('public')->put('books_files', $request->book_file);
+            $book->addMediaFromRequest('book_file')->toMediaCollection('book_file');
         }
 
                 // Create a book
-                $book = Auth::user()->books()->create([
-                    'title' => $request->title,
-                    'publication_date' => $request->publication_date,
-                    'cover_image' => $path,
-                    'book_file' => $filePath // save file path to the database
-                ]);
+                // $book = Auth::user()->books()->create([
+                //     'title' => $request->title,
+                //     'publication_date' => $request->publication_date,
+                //     'cover_image' => $path,
+                //     'book_file' => $filePath // save file path to the database
+                // ]);
         
                 // Redirect back to home
                 return back()->with('success', 'Your book was created.');

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Author;
+use App\Models\Book;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreAuthorRequest;
 use App\Http\Requests\UpdateAuthorRequest;
@@ -12,6 +13,7 @@ use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Http\Request;
 
 class AuthorController extends Controller implements HasMiddleware
 {
@@ -38,7 +40,7 @@ class AuthorController extends Controller implements HasMiddleware
      */
     public function create()
     {
-        //
+        return view('authors.create');
     }
 
     /**
@@ -49,22 +51,29 @@ class AuthorController extends Controller implements HasMiddleware
         // Validate
                 $request->validate([
                     'name' => ['required', 'max:255'],
-                    'slug' => ['required'],
-                    'image' => ['nullable', 'file', 'max:3000', 'mimes:webp,png,jpg']
+                    // 'slug' => ['required'],
+                    // 'image' => ['nullable', 'file', 'max:3000', 'mimes:webp,png,jpg']
                 ]);
         
+                    // Create an author
+    $author = Author::create([
+        'name' => $request->name,
+        // 'slug' => $request->slug,
+    ]);
+
                 // Store image if exists
-                $path = null;
                 if ($request->hasFile('image')) {
-                    $path = Storage::disk('public')->put('authors_images', $request->image);
+                    $author->addMediaFromRequest('image')->toMediaCollection('image');
                 }
+            
+
         
                 // Create a author
-                $author = Auth::user()->authors()->create([
-                    'name' => $request->name,
-                    'slug' => $request->slug,
-                    'image' => $path
-                ]);
+                // $author = Auth::user()->authors()->create([
+                //     'name' => $request->name,
+                //     'slug' => $request->slug,
+                //     'image' => $path
+                // ]);
         
                 // Redirect back to dashboard
                 return back()->with('success', 'Your Author was created.');
@@ -84,7 +93,7 @@ class AuthorController extends Controller implements HasMiddleware
     public function edit(Author $author)
     {
                // Authorizing the action
-               Gate::authorize('modify', $author);
+            //    Gate::authorize('modify', $author);
 
                return view('authors.edit', ['author' => $author]);
     }
@@ -95,29 +104,34 @@ class AuthorController extends Controller implements HasMiddleware
     public function update(Request $request, Author $author)
     {
          // Authorizing the action
-         Gate::authorize('modify', $author);
+        //  Gate::authorize('modify', $author);
 
          // Validate
          $request->validate([
              'name' => ['required', 'max:255'],
              'slug' => ['required'],
-             'image' => ['nullable', 'file', 'max:3000', 'mimes:webp,png,jpg']
+            //  'image' => ['nullable', 'file', 'max:3000', 'mimes:webp,png,jpg']
          ]);
+
+                         // Store image if exists
+                         if ($request->hasFile('image')) {
+                            $author->addMediaFromRequest('image')->toMediaCollection('image');
+                        }
  
          // Store image if exists
-         $path = $author->image ?? null;
-         if ($request->hasFile('image')) {
-             if ($author->image) {
-                 Storage::disk('public')->delete($author->image);
-             }
-             $path = Storage::disk('public')->put('authors_images', $request->image);
-         }
+        //  $path = $author->image ?? null;
+        //  if ($request->hasFile('image')) {
+        //      if ($author->image) {
+        //          Storage::disk('public')->delete($author->image);
+        //      }
+        //      $path = Storage::disk('public')->put('authors_images', $request->image);
+        //  }
  
          // Update the author
          $author->update([
              'name' => $request->name,
              'slug' => $request->slug,
-             'image' => $path
+            //  'image' => $path
          ]);
  
          // Redirect to home
@@ -131,12 +145,12 @@ class AuthorController extends Controller implements HasMiddleware
     public function destroy(Author $author)
     {
                 // Authorizing the action
-                Gate::authorize('modify', $author);
+                // Gate::authorize('modify', $author);
 
                 // Delete author image if exists
-                if ($author->image) {
-                    Storage::disk('public')->delete($author->image);
-                }
+                // if ($author->image) {
+                //     Storage::disk('public')->delete($author->image);
+                // }
         
                 // Delete the author
                 $author->delete();
@@ -152,7 +166,7 @@ class AuthorController extends Controller implements HasMiddleware
         // $authors = Author::with(['books' => function ($query) {
         //     $query->select('id', 'author_id', 'title', 'publication_date');
         // }])->withCount('books')->paginate(6);
-        return view('home', ['authors' => $authors]);
+        return view('authors.home', ['authors' => $authors]);
     }
 
     /**
@@ -161,13 +175,35 @@ class AuthorController extends Controller implements HasMiddleware
     public function authorBooks($slug)
     {
         $author = Author::where('slug', $slug)->firstOrFail();
-        $authorBooks = $author->books()->latest()->paginate(6);
+        $authorBookslist = $author->books()->latest()->paginate(6);
 
         return view('authors.books', [
-            'books' => $authorBooks,
+            'books' => $authorBookslist,
             'author' => $author
         ]);
     }
 
+    // public function addBook($slug)
+    // {
+    //     $author = Author::where('slug', $slug)->firstOrFail();
+    //     return view('authors.addbook', ['author' => $author]);
+    // }
+
+
+    // public function addNewBook(Request $request, $slug)
+    // {
+    //     $author = Author::where('slug', $slug)->firstOrFail();
+    //     $book = new Book($request->only(['title', 'cover_image', 'book_file', 'publication_date']));
+    //     $book->author_id = $author->id;
+    //     $book->save();
+    //     return redirect()->route('authors.authorBooks', $slug);
+    // }
+
+
+    public function addNewBook($slug)
+{
+    $author = Author::where('slug', $slug)->firstOrFail();
+    return view('authors.addbook', ['author' => $author]);
+}
 
 }

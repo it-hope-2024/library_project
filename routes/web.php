@@ -4,24 +4,20 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\AuthorController;
-use App\Http\Controllers\DashboardController;
 
-// Route::get('/', function () { return view('home');})->name('home');
-// Route::get('/', [DashboardController::class, 'index'])->name('home');
-// Route::get('/', [AuthorController::class, 'home'])->name('home');
+
+
 // Books Routes
 Route::resource('books', BookController::class);
 // Authors Routes
-Route::resource('authors', AuthorController::class);
-Route::get('/', [AuthorController::class, 'home'])->name('home');
+
+Route::get('/', [AuthorController::class, 'home'])->name('authors.home');
 // Author Books Route
-Route::get('/{slug}/books', [AuthorController::class, 'authorbooks'])->name('books.author');
+Route::get('/{slug}/books', [AuthorController::class, 'authorBooks'])->name('authors.authorBooks');
+Route::resource('authors', AuthorController::class);
+Route::view('/book/create','authors.addBook');
 
-
-// Route::get('/{slug}/books', [DashboardController::class, 'authorbooks'])->name('books.author');
-// Route::get('/{slug}/books', [DashboardController::class, 'authorbooks'])->name('books.author');
-
-
+Route::get('/authors/{slug}/books/add', [AuthorController::class, 'addNewBook'])->name('authors.addNewBook');
 
 
 Route::middleware('auth')->group(function () {

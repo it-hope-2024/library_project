@@ -34,6 +34,7 @@
                 <p class="error">{{ $message }}</p>
             @enderror
         </div>
+        
 
         {{-- Book Image --}}
         <div class="mb-4">
