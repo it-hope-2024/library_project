@@ -1,5 +1,5 @@
 <x-layout>
-    <div class="card mb-4 p-6 bg-white rounded-lg shadow-md">
+    <div class="mx-auto max-w-screen-sm p-6 bg-white shadow-md rounded-lg my-10">
         <h2 class="font-bold mb-4 text-xl text-gray-800">Create a new book</h2>
 
         {{-- Session Messages --}}

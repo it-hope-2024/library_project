@@ -2,13 +2,14 @@
 
 <div class="items-center bg-gray-50 rounded-lg shadow sm:flex dark:bg-gray-800 dark:border-gray-700">
 
-    @if ($author->image)
-        <img src="{{ asset('storage/' . $author->image) }}" alt="Author Image" class="w-64 h-64 rounded-lg sm:rounded-none sm:rounded-l-lg" >
+    @if ($author->getFirstMediaUrl('author_images'))
+        <img src="{{  $author->getFirstMediaUrl('author_images') }}" alt="Author Image" class="w-64 h-64 rounded-lg sm:rounded-none sm:rounded-l-lg" >
     @else
         <a href="{{ route('authors.authorBooks', ['slug' => $author->slug]) }}">
             <img class="w-64 h-64 rounded-lg sm:rounded-none sm:rounded-l-lg"
                 src="{{ asset('assets/images/person.svg') }}" alt="">
         </a>
+       
     @endif
     <div class="p-5">
         <h3 class="text-xl font-bold tracking-tight text-gray-900 dark:text-white">

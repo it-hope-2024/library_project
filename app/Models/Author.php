@@ -9,15 +9,15 @@ use Illuminate\Support\Str;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
-class Author extends Model
+class Author extends Model  implements HasMedia
 {
     use InteractsWithMedia;
     
 
     public function registerMediaCollections(): void
     {
-        $this->addMediaCollection('image');
-    }
+        $this->addMediaCollection('author_images')->singleFile();
+    } 
     /** @use HasFactory<\Database\Factories\AuthorFactory> */
     use HasFactory;
     protected $fillable = [

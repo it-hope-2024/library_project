@@ -18,7 +18,26 @@
 
                 {{-- author's books --}}
                 @foreach ($books as $book)
-                    <x-book-card :book="$book" />
+                    <x-book-card :book="$book" >
+                        @auth
+
+
+                            {{-- Update Book --}}
+                            <div class="mt-2">
+                                <a href="{{ route('books.edit', $book) }}"
+                                    class="bg-green-500 inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white  rounded-lg">Update</a>
+                            </div>
+                            {{-- Delete Book --}}
+                            <div class="mt-2">
+                                <form action="{{ route('books.destroy', $book) }}" method="post">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button
+                                        class="bg-red-500 inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white  rounded-lg">Delete</button>
+                                </form>
+                            </div>
+                        @endauth
+                    </x-book-card>
                 @endforeach
             </div>
 

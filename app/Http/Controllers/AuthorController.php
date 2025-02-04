@@ -63,18 +63,12 @@ class AuthorController extends Controller implements HasMiddleware
 
                 // Store image if exists
                 if ($request->hasFile('image')) {
-                    $author->addMediaFromRequest('image')->toMediaCollection('image');
+                    $author->addMediaFromRequest('image')->toMediaCollection('author_images');
                 }
             
 
         
-                // Create a author
-                // $author = Auth::user()->authors()->create([
-                //     'name' => $request->name,
-                //     'slug' => $request->slug,
-                //     'image' => $path
-                // ]);
-        
+ 
                 // Redirect back to dashboard
                 return back()->with('success', 'Your Author was created.');
     }
@@ -92,8 +86,7 @@ class AuthorController extends Controller implements HasMiddleware
      */
     public function edit(Author $author)
     {
-               // Authorizing the action
-            //    Gate::authorize('modify', $author);
+
 
                return view('authors.edit', ['author' => $author]);
     }
@@ -103,39 +96,31 @@ class AuthorController extends Controller implements HasMiddleware
      */
     public function update(Request $request, Author $author)
     {
-         // Authorizing the action
-        //  Gate::authorize('modify', $author);
+
 
          // Validate
          $request->validate([
              'name' => ['required', 'max:255'],
-             'slug' => ['required'],
+            //  'slug' => ['required'],
             //  'image' => ['nullable', 'file', 'max:3000', 'mimes:webp,png,jpg']
          ]);
 
                          // Store image if exists
-                         if ($request->hasFile('image')) {
-                            $author->addMediaFromRequest('image')->toMediaCollection('image');
+                        if ($request->hasFile('image')) {
+                            $author->addMediaFromRequest('image')->toMediaCollection('author_images');
                         }
  
-         // Store image if exists
-        //  $path = $author->image ?? null;
-        //  if ($request->hasFile('image')) {
-        //      if ($author->image) {
-        //          Storage::disk('public')->delete($author->image);
-        //      }
-        //      $path = Storage::disk('public')->put('authors_images', $request->image);
-        //  }
+
  
          // Update the author
          $author->update([
              'name' => $request->name,
-             'slug' => $request->slug,
+            //  'slug' => $request->slug,
             //  'image' => $path
          ]);
  
          // Redirect to home
-         return redirect()->route('home')->with('success', 'Your author was updated.');
+         return redirect()->route('authors.home')->with('success', 'Your author was updated.');
      }
     
 
@@ -145,12 +130,7 @@ class AuthorController extends Controller implements HasMiddleware
     public function destroy(Author $author)
     {
                 // Authorizing the action
-                // Gate::authorize('modify', $author);
 
-                // Delete author image if exists
-                // if ($author->image) {
-                //     Storage::disk('public')->delete($author->image);
-                // }
         
                 // Delete the author
                 $author->delete();
@@ -183,21 +163,6 @@ class AuthorController extends Controller implements HasMiddleware
         ]);
     }
 
-    // public function addBook($slug)
-    // {
-    //     $author = Author::where('slug', $slug)->firstOrFail();
-    //     return view('authors.addbook', ['author' => $author]);
-    // }
-
-
-    // public function addNewBook(Request $request, $slug)
-    // {
-    //     $author = Author::where('slug', $slug)->firstOrFail();
-    //     $book = new Book($request->only(['title', 'cover_image', 'book_file', 'publication_date']));
-    //     $book->author_id = $author->id;
-    //     $book->save();
-    //     return redirect()->route('authors.authorBooks', $slug);
-    // }
 
 
     public function addNewBook($slug)

@@ -29,7 +29,10 @@
                       <a href="{{route('authors.create')}}" class="block py-2 px-3 rounded ">Add Author</a>
                   </li>
                   <li>
-                    <a href="/" class="block py-2 px-3 rounded ">Add Book</a>
+                    <a href="{{route('books.create')}}" class="block py-2 px-3 rounded ">Add Book</a>
+                  </li>
+                  <li>
+                    <a href="#" class="block py-2 px-3 rounded ">Add Author (API) </a>
                   </li>
                         <li>
                             <form action="{{ route('logout') }}" method="post">
