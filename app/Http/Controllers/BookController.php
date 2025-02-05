@@ -130,8 +130,10 @@ class BookController extends Controller  implements HasMiddleware
 
            ]);
    
+        
+    return back()->with('success', 'Your book was updated.');
            // Redirect to home
-           return redirect()->route('authors.home')->with('success', 'Your book was updated.');
+        //    return redirect()->route('authors.home')->with('success', 'Your book was updated.');
     }
 
     /**

@@ -26,13 +26,21 @@
 
                     @auth
                     <li>
-                      <a href="{{route('authors.create')}}" class="block py-2 px-3 rounded ">Add Author</a>
+                      <a href="{{route('authors.create')}}" class="block py-2 px-3 rounded ">Create Author</a>
                   </li>
                   <li>
-                    <a href="{{route('books.create')}}" class="block py-2 px-3 rounded ">Add Book</a>
+                    <a href="{{route('books.create')}}" class="block py-2 px-3 rounded ">Create Books</a>
                   </li>
                   <li>
-                    <a href="#" class="block py-2 px-3 rounded ">Add Author (API) </a>
+                    <x-modal>
+
+                        
+                            <button id="defaultModalButton" data-modal-target="defaultModal" data-modal-toggle="defaultModal" class="block py-2 px-3 rounded" type="submit">
+                                Add Author(API)
+                            </button>
+                        
+                    </x-modal>
+                    
                   </li>
                         <li>
                             <form action="{{ route('logout') }}" method="post">

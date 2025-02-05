@@ -18,7 +18,7 @@ Route::resource('authors', AuthorController::class);
 Route::view('/book/create','authors.addBook');
 
 Route::get('/authors/{slug}/books/add', [AuthorController::class, 'addNewBook'])->name('authors.addNewBook');
-
+Route::post('/add/author', [AuthorController::class, 'addauthorapi'])->name('authors.addauthor');
 
 Route::middleware('auth')->group(function () {
     // Logout Route

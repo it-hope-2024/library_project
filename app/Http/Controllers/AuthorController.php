@@ -171,4 +171,32 @@ class AuthorController extends Controller implements HasMiddleware
     return view('authors.addbook', ['author' => $author]);
 }
 
+
+public function addauthorapi(Request $request)
+    {
+        // Validate the request data
+        $request->validate([
+            'name' => ['required', 'max:255'],
+            // 'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        ]);
+
+        // Create a new author
+        $author = new Author();
+        $author->name = $request->input('name');
+        
+        // Handle the image file using Media Library
+        if ($request->hasFile('image')) {
+            $author->addMediaFromRequest('image')->toMediaCollection('author_images');
+        }
+
+        $author->save();
+
+        // Return a response
+        return response()->json(['message' => 'Author added successfully'], 201);
+    }
+
+
 }
+
+
+

@@ -1,6 +1,15 @@
 <x-layout>
     <div class="mx-auto max-w-screen-sm p-6 bg-white shadow-md rounded-lg my-10">
+
         <h2 class="font-bold mb-4">Update your book</h2>
+
+
+        {{-- Session Messages --}}
+        @if (session('success'))
+            <x-flash-msg msg="{{ session('success') }}" />
+        @elseif (session('delete'))
+            <x-flash-msg msg="{{ session('delete') }}" bg="bg-red-500" />
+        @endif
         <form action="{{ route('books.update', $book) }}" method="post" enctype="multipart/form-data">
             @csrf
             @method('PUT')
@@ -59,25 +68,27 @@
 
             {{-- Current Book File if exists --}}
             @if ($book->getFirstMediaUrl('book_files'))
-                <div class="h-auto rounded-md mb-4 w-1/6 overflow-hidden">
-                    <label class="block mb-2 text-sm font-medium text-gray-900">Current Book File</label>
-                    <img class="object-cover object-center rounded-md"
-                        src="{{ $book->getFirstMediaUrl('book_images') }}">
-                </div>
+            <span class="text-black" >Current File :</span>
+                <a href="{{ $book->getFirstMediaUrl('book_files') }}" target="_blank"
+                    class="mt-4 inline-block px-4 py-2 rounded tracking-wider text-blue-500 hover:text-blue-400  text-[13px]">{{ $book->getFirstMediaUrl('book_files') }}</a>
+            @else
+                <p class="mt-4 text-gray-500 text-sm">No PDF available for this book.</p>
             @endif
+    
 
-            {{-- Book File --}}
-            <div class="mb-4">
-                <label for="book_file" class="block mb-2 text-sm font-medium text-gray-900">Book File</label>
-                <input type="file" name="book_file" id="book_file"
-                    class="block w-full text-sm text-gray-900 border rounded-lg cursor-pointer bg-gray-50 focus:outline-none @error('book_file') border-red-500 @enderror">
-                @error('book_file')
-                    <p class="text-red-500 text-sm mt-2">{{ $message }}</p>
-                @enderror
-            </div>
 
-            {{-- Submit Button --}}
-            <button class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">Update</button>
-        </form>
+    {{-- Book File --}}
+    <div class="mb-4">
+        <label for="book_file" class="block mb-2 text-sm font-medium text-gray-900">Book File</label>
+        <input type="file" name="book_file" id="book_file"
+            class="block w-full text-sm text-gray-900 border rounded-lg cursor-pointer bg-gray-50 focus:outline-none @error('book_file') border-red-500 @enderror">
+        @error('book_file')
+            <p class="text-red-500 text-sm mt-2">{{ $message }}</p>
+        @enderror
+    </div>
+
+    {{-- Submit Button --}}
+    <button class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">Update</button>
+    </form>
     </div>
 </x-layout>

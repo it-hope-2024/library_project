@@ -6,7 +6,11 @@
                 <p class="font-light text-gray-500 lg:mb-16 sm:text-xl dark:text-gray-400">Explore our diverse collection
                     of authors and their remarkable books, crafted with the finest utility classes from Tailwind.
                     Discover the creativity and uniqueness within each story.</p>
+
+                    
+   
             </div>
+
             <div class="grid gap-8 mb-6 lg:mb-16 md:grid-cols-2">
 
 

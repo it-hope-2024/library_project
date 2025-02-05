@@ -1,7 +1,15 @@
 <x-layout>
     <div class="mx-auto max-w-screen-sm p-6 bg-white shadow-md rounded-lg my-10">
-    
-        <h2 class="font-bold mb-4 text-xl text-gray-800">Create a new Author</h2>
+        <div class="flex items-center mb-4 space-x-4">
+            <!-- Go Back Button -->
+            <a href="{{ route('authors.home') }}" class="inline-flex items-center justify-center w-10 h-10 text-gray-600 bg-gray-200 rounded-full hover:bg-gray-400 focus:ring-4 focus:outline-none focus:ring-gray-300">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                </svg>
+            </a>
+            <h2 class="font-bold mb-4 text-xl text-gray-800">Create a new Author</h2>
+        </div>
+        
 
       
         @if (session('success'))
